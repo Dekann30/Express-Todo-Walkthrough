@@ -67,6 +67,22 @@ app.get('/todo/seed', async (req,res)=>{
     res.json(todos)
 })
 
+app.post('/todo', async (req,res)=>{
+    //create todo
+    await Todo.create(req.body).catch((err)=> res.send(err))
+    res.redirect('/')
+})
+
+app.put('/todo/:id', async (req,res)=>{
+    //getid from params
+    const id = req.params.id
+    //get todo to update
+    const todo = await Todo.findById(id)
+    //update completed property
+    todo.completed = true
+    await todo.save() //saves changes
+    res.redirect('/')
+})
 //////////////////
 //Server Listener
 /////////////////
